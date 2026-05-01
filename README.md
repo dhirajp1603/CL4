@@ -1,11 +1,5 @@
 # 📊 LAB 2: MapReduce – Word Frequency using Hadoop Streaming (Python)
 
-## 🧠 Objective
-
-To implement a MapReduce program using Hadoop Streaming in Python to count the frequency of a specific word ("data") in a text file.
-
----
-
 ## 📚 Theory
 
 MapReduce is a programming model used for processing large datasets in a distributed environment.
@@ -19,14 +13,6 @@ In this experiment:
 
 * The **Mapper** filters and emits occurrences of the word `"data"`
 * The **Reducer** counts the total occurrences
-
----
-
-## 🛠️ Tools & Technologies
-
-* Python (Hadoop Streaming)
-* Hadoop Distributed File System (HDFS)
-* Linux Terminal
 
 ---
 

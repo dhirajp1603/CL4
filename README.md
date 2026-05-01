@@ -155,23 +155,6 @@ The MapReduce program successfully counted the occurrences of the word **"data"*
 
 ---
 
-## ⚠️ Notes
-
-* The code uses **Python 2 syntax** (`print ""`)
-* For Python 3, replace:
-
-  ```
-  print "%s\t1" % word
-  ```
-
-  with:
-
-  ```
-  print("%s\t1" % word)
-  ```
-
----
-
 ## 🚀 Future Enhancements
 
 * Count frequency of all words instead of one

@@ -135,17 +135,25 @@ hdfs dfs -mkdir /input
 hdfs dfs -put students.txt /input
 ```
 
-### 6️⃣ Run Hadoop Streaming Job
+### 6️⃣ Remove Old Output
 
-```id="m9z2ky"
-hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
--input /input/students.txt \
--output /output \
--mapper "python mapper.py" \
--reducer "python reducer.py"
+```id="7og6sn"
+hadoop fs -rm -r /output
 ```
 
-### 7️⃣ View Output
+### 7️⃣ Run Hadoop Job
+
+```id="s2u7rz"
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+-input /input/input.txt \
+-output /output \
+-mapper mapper.py \
+-reducer reducer.py \
+-file mapper.py \
+-file reducer.py
+```
+
+###  View Output
 
 ```id="v6n8qr"
 hdfs dfs -cat /output/part-00000

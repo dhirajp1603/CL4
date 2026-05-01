@@ -144,7 +144,7 @@ hadoop fs -rm -r /output
 
 ```id="s2u7rz"
 hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
--input /input/input.txt \
+-input /input/students.txt \
 -output /output \
 -mapper mapper.py \
 -reducer reducer.py \

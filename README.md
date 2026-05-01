@@ -164,13 +164,121 @@ The MapReduce program successfully counted the occurrences of the word **"data"*
 
 ---
 
-## ❓ Viva Questions
+## ❓ Viva Questions with Answers
 
-1. What is Hadoop Streaming?
-2. What is the role of Mapper?
-3. What is the role of Reducer?
-4. Why is sorting required before Reducer?
-5. What is HDFS?
+### 1️⃣ What is Hadoop Streaming?
+
+Hadoop Streaming is a utility that allows users to write MapReduce programs using any programming language (such as Python, C++, or Shell) that can read input from standard input (`stdin`) and write output to standard output (`stdout`). It eliminates the need to write MapReduce programs in Java.
+
+---
+
+### 2️⃣ What is the role of Mapper?
+
+The Mapper processes the input data line by line and converts it into key-value pairs.
+
+👉 In this experiment:
+
+* It reads each line
+* Splits it into words
+* Filters the word **"data"**
+* Outputs:
+
+```
+data    1
+```
+
+---
+
+### 3️⃣ What is the role of Reducer?
+
+The Reducer processes the output from the Mapper and aggregates values for each key.
+
+👉 In this experiment:
+
+* It receives all `(data, 1)` pairs
+* Adds them together
+* Produces the final count
+
+---
+
+### 4️⃣ Why is sorting required before Reducer?
+
+Sorting and grouping are automatically performed by Hadoop between the Mapper and Reducer phases.
+
+👉 Purpose:
+
+* Groups identical keys together
+* Ensures Reducer receives all values of a key at once
+
+Example:
+
+```
+data 1
+data 1
+data 1
+```
+
+---
+
+### 5️⃣ What is HDFS?
+
+HDFS (Hadoop Distributed File System) is a distributed storage system used by Hadoop.
+
+👉 Features:
+
+* Stores large data across multiple machines
+* Fault-tolerant using replication
+* Provides high-speed data access
+
+---
+
+### 6️⃣ What is a key-value pair?
+
+It is the intermediate data format used in MapReduce:
+
+```
+key    value
+```
+
+Example:
+
+```
+data    1
+```
+
+---
+
+### 7️⃣ What is a Combiner?
+
+A Combiner is an optional mini-reducer that runs after the Mapper to reduce data before sending it to the Reducer, improving performance.
+
+---
+
+### 8️⃣ Difference between Mapper and Reducer?
+
+| Mapper                    | Reducer               |
+| ------------------------- | --------------------- |
+| Processes input data      | Aggregates results    |
+| Generates key-value pairs | Produces final output |
+| Runs first                | Runs after sorting    |
+
+---
+
+### 9️⃣ Why do we use tab (`\t`) in output?
+
+Tab is used to separate key and value so Hadoop can correctly interpret the data.
+
+---
+
+### 🔟 What happens if the output directory already exists?
+
+Hadoop throws an error because it does not overwrite existing output directories.
+
+👉 Solution:
+
+```
+hdfs dfs -rm -r /output1
+```
 
 ---
 

@@ -21,9 +21,45 @@ In this experiment:
 **file1.txt**
 
 ```
-data science is fun
-big data is powerful
-data is everywhere
+#!/usr/bin/env python
+import sys
+
+current_key = None
+A = {}
+B = {}
+
+for line in sys.stdin:
+    line = line.strip()
+    key, value = line.split("\t")
+    matrix, index, val = value.split(",")
+
+    index = int(index)
+    val = float(val)
+
+    if key != current_key:
+        if current_key:
+            result = 0
+            for k in A:
+                if k in B:
+                    result += A[k] * B[k]
+            print "%s\t%f" % (current_key, result)
+
+        current_key = key
+        A = {}
+        B = {}
+
+    if matrix == "A":
+        A[index] = val
+    else:
+        B[index] = val
+
+# last key
+if current_key:
+    result = 0
+    for k in A:
+        if k in B:
+            result += A[k] * B[k]
+    print "%s\t%f" % (current_key, result)
 ```
 
 ---

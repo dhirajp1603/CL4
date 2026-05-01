@@ -64,18 +64,22 @@ B,1,1,8
 #!/usr/bin/env python
 import sys
 
-N = 2
+N = 2  # matrix size
 
 for line in sys.stdin:
-    parts = line.strip().split(',')
-    matrix, i, j, val = parts[0], int(parts[1]), int(parts[2]), int(parts[3])
+    line = line.strip()
 
-    if matrix == 'A':
-        for k in range(N):
-            print("%d,%d\tA,%d,%d" % (i, k, j, val))
-    else:
-        for k in range(N):
-            print("%d,%d\tB,%d,%d" % (k, j, i, val))
+    if not line:
+        continue
+
+    parts = line.split(",")
+
+    if len(parts) != 4:
+        continue
+
+    matrix, i, j, val = parts
+    i, j, val = int(i), int(j), float(val)
+
 ```
 
 ---
@@ -87,39 +91,41 @@ for line in sys.stdin:
 import sys
 
 current_key = None
-values = []
+A = {}
+B = {}
 
-def process(key, values):
-    A = {}
-    B = {}
+for line in sys.stdin:
+    line = line.strip()
+    key, value = line.split("\t")
+    matrix, index, val = value.split(",")
 
-    for val in values:
-        parts = val.split(',')
-        if parts[0] == 'A':
-            A[int(parts[1])] = int(parts[2])
-        else:
-            B[int(parts[1])] = int(parts[2])
+    index = int(index)
+    val = float(val)
 
+    if key != current_key:
+        if current_key:
+            result = 0
+            for k in A:
+                if k in B:
+                    result += A[k] * B[k]
+            print "%s\t%f" % (current_key, result)
+
+        current_key = key
+        A = {}
+        B = {}
+
+    if matrix == "A":
+        A[index] = val
+    else:
+        B[index] = val
+
+# last key
+if current_key:
     result = 0
     for k in A:
         if k in B:
             result += A[k] * B[k]
-
-    print("%s\t%d" % (key, result))
-
-for line in sys.stdin:
-    key, val = line.strip().split('\t')
-
-    if key == current_key:
-        values.append(val)
-    else:
-        if current_key:
-            process(current_key, values)
-        current_key = key
-        values = [val]
-
-if current_key:
-    process(current_key, values)
+    print "%s\t%f" % (current_key, result)
 ```
 
 ---
@@ -160,7 +166,7 @@ hdfs dfs -put input.txt /input
 ### 6️⃣ Remove Old Output
 
 ```id="7og6sn"
-hdfs dfs -rm -r /output
+hadoop fs -rm -r /output
 ```
 
 ### 7️⃣ Run Hadoop Job
@@ -170,7 +176,9 @@ hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
 -input /input/input.txt \
 -output /output \
 -mapper mapper.py \
--reducer reducer.py
+-reducer reducer.py \
+-file mapper.py \
+-file reducer.py
 ```
 
 ### 8️⃣ View Output

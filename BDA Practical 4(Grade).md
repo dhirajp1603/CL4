@@ -304,11 +304,6 @@ import sys
 current_student = None
 marks_list = []
 
-# 🔹 Print table header ONLY ONCE
-print("+-----------+----------+--------+")
-print("| StudentID | AvgMarks | Grade  |")
-print("+-----------+----------+--------+")
-
 def calculate_grade(avg):
     if avg >= 90:
         return "A"
@@ -322,8 +317,17 @@ def calculate_grade(avg):
         return "F"
 
 for line in sys.stdin:
-    student_id, marks = line.strip().split("\t")
-    marks = float(marks)
+    line = line.strip()
+
+    # 🔥 FIX: skip bad lines
+    if not line or "\t" not in line:
+        continue
+
+    try:
+        student_id, marks = line.split("\t")
+        marks = float(marks)
+    except:
+        continue
 
     if current_student == student_id:
         marks_list.append(marks)
@@ -331,18 +335,16 @@ for line in sys.stdin:
         if current_student:
             avg = sum(marks_list) / len(marks_list)
             grade = calculate_grade(avg)
-            print("| %s       | %0.2f    | %s      |" % (current_student, avg, grade))
+            print "%s,%0.2f,%s" % (current_student, avg, grade)
 
         current_student = student_id
         marks_list = [marks]
 
+# last student
 if current_student:
     avg = sum(marks_list) / len(marks_list)
     grade = calculate_grade(avg)
-    print("| %s       | %0.2f    | %s      |" % (current_student, avg, grade))
-
-# 🔹 Print table footer
-print("+-----------+----------+--------+")
+    print "%s,%0.2f,%s" % (current_student, avg, grade)
 ```
 
 ---

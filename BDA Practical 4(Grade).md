@@ -30,7 +30,17 @@ In this experiment:
 102,Science,68
 103,Math,55
 ```
+# 📂 Output File
 
+**result.txt**
+
+```id="7f1k2p"
+101,Math,95
+101,English,88
+102,Math,72
+102,Science,68
+103,Math,55
+```
 ---
 
 ## 📜 Mapper Code (mapper.py)
@@ -224,6 +234,191 @@ Mapper skips invalid lines using exception handling.
 ### 7️⃣ Why do we use float for marks?
 
 To allow decimal calculations for accurate averages.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 📊 LAB 4: MapReduce – Student Grades (Table Output in Reducer)
+
+---
+
+## 🧠 Objective
+
+To calculate student averages and assign grades using MapReduce, and directly display results in a formatted table from the reducer.
+
+---
+
+## 📂 Input Data
+
+**students.txt**
+
+```id="a1b2c3"
+101,Math,95
+101,English,88
+102,Math,72
+102,Science,68
+103,Math,55
+```
+
+---
+
+## 📜 Mapper Code (mapper.py)
+
+```python
+#!/usr/bin/env python
+import sys
+
+for line in sys.stdin:
+    parts = line.strip().split(",")
+
+    if len(parts) != 3:
+        continue
+
+    student_id, subject, marks = parts
+
+    try:
+        print "%s\t%s" % (student_id, float(marks))
+    except:
+        continue
+```
+
+---
+
+## 📜 Reducer Code (reducer.py) — WITH TABLE OUTPUT
+
+```python
+#!/usr/bin/env python
+import sys
+
+current_student = None
+marks_list = []
+
+# 🔹 Print table header ONLY ONCE
+print("+-----------+----------+--------+")
+print("| StudentID | AvgMarks | Grade  |")
+print("+-----------+----------+--------+")
+
+def calculate_grade(avg):
+    if avg >= 90:
+        return "A"
+    elif avg >= 80:
+        return "B"
+    elif avg >= 70:
+        return "C"
+    elif avg >= 60:
+        return "D"
+    else:
+        return "F"
+
+for line in sys.stdin:
+    student_id, marks = line.strip().split("\t")
+    marks = float(marks)
+
+    if current_student == student_id:
+        marks_list.append(marks)
+    else:
+        if current_student:
+            avg = sum(marks_list) / len(marks_list)
+            grade = calculate_grade(avg)
+            print("| %s       | %0.2f    | %s      |" % (current_student, avg, grade))
+
+        current_student = student_id
+        marks_list = [marks]
+
+if current_student:
+    avg = sum(marks_list) / len(marks_list)
+    grade = calculate_grade(avg)
+    print("| %s       | %0.2f    | %s      |" % (current_student, avg, grade))
+
+# 🔹 Print table footer
+print("+-----------+----------+--------+")
+```
+
+---
+
+## ⚙️ Execution Steps
+
+```bash
+chmod +x mapper.py reducer.py
+
+hdfs dfs -mkdir /input
+hdfs dfs -put students.txt /input
+
+hdfs dfs -rm -r /output
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+-input /input/students.txt \
+-output /output \
+-mapper mapper.py \
+-reducer reducer.py \
+-file mapper.py \
+-file reducer.py \
+-D mapreduce.job.reduces=1
+```
+
+---
+
+## ✅ Output
+
+```id="out123"
++-----------+----------+--------+
+| StudentID | AvgMarks | Grade  |
++-----------+----------+--------+
+| 101       | 91.50    | A      |
+| 102       | 70.00    | C      |
+| 103       | 55.00    | F      |
++-----------+----------+--------+
+```
+
+---
+
+## ⚠️ Important Notes
+
+* `-D mapreduce.job.reduces=1` is **required**
+* Without it:
+
+  * Multiple reducers → multiple headers ❌
+  * Output split into multiple files ❌
+
+---
+
+## ❓ Viva Tip (Very Important)
+
+👉 If examiner asks:
+**“Is this the correct way to format output in Hadoop?”**
+
+Answer:
+
+> “No, formatting is usually done after MapReduce. This approach works only when using a single reducer and is mainly for demonstration purposes.”
+
+---
+
+## 📌 Result
+
+The program successfully computed averages, assigned grades, and displayed results in a formatted table directly from the reducer.
+
+---
+
+## 🚀 Conclusion
+
+This experiment demonstrates both:
+
+* Data processing using MapReduce
+* Limitations of formatting in distributed systems
+
+---
+
 
 ---
 

@@ -91,41 +91,48 @@ for line in sys.stdin:
 import sys
 
 current_key = None
-A = {}
-B = {}
+values = []
 
-for line in sys.stdin:
-    line = line.strip()
-    key, value = line.split("\t")
-    matrix, index, val = value.split(",")
+def process(key, values):
+    A = {}
+    B = {}
 
-    index = int(index)
-    val = float(val)
+    for val in values:
+        parts = val.split(',')
+        if len(parts) != 3:
+            continue
 
-    if key != current_key:
-        if current_key:
-            result = 0
-            for k in A:
-                if k in B:
-                    result += A[k] * B[k]
-            print "%s\t%f" % (current_key, result)
+        matrix, k, v = parts
+        k = int(k)
+        v = float(v)
 
-        current_key = key
-        A = {}
-        B = {}
+        if matrix == 'A':
+            A[k] = v
+        else:
+            B[k] = v
 
-    if matrix == "A":
-        A[index] = val
-    else:
-        B[index] = val
-
-# last key
-if current_key:
     result = 0
     for k in A:
         if k in B:
             result += A[k] * B[k]
-    print "%s\t%f" % (current_key, result)
+
+    print("%s\t%f" % (key, result))
+
+
+for line in sys.stdin:
+    key, val = line.strip().split('\t')
+
+    if key == current_key:
+        values.append(val)
+    else:
+        if current_key:
+            process(current_key, values)
+
+        current_key = key
+        values = [val]
+
+if current_key:
+    process(current_key, values)
 ```
 
 ---

@@ -16,6 +16,20 @@ In this experiment:
 
 ---
 
+
+
+
+
+
+
+## ⚙️ Execution Steps
+
+### 1 Create Input File
+
+```
+nano file1.txt
+```
+
 ## 📂 Input Data
 
 **file1.txt**
@@ -26,6 +40,11 @@ big data is powerful
 data is everywhere
 ```
 
+### 2 Create Mapper & Reducer Files
+
+```
+nano map1.py
+```
 ---
 
 ## 📜 Mapper Code (map1.py)
@@ -43,6 +62,10 @@ for line in sys.stdin:
             print "%s\t1" % word
 ```
 
+### 4 Create Reducer Files
+```
+nano reduce1.py
+```
 ---
 
 ## 📜 Reducer Code (reduce1.py)
@@ -77,26 +100,6 @@ if current_word:
 
 ---
 
-## ⚙️ Execution Steps
-
-### 1️⃣ Navigate to Home Directory
-
-```
-cd ~
-```
-
-### 2️⃣ Create Input File
-
-```
-nano file1.txt
-```
-
-### 3️⃣ Create Mapper & Reducer Files
-
-```
-nano map1.py
-nano reduce1.py
-```
 
 ### 4️⃣ Make Scripts Executable
 

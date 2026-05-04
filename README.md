@@ -8,3 +8,4 @@
 
 ## BDA [Practical 4 (Grade)](https://github.com/dhirajp1603/BDA/blob/f75976d0583cab9d11a9b6ad81ccf39509546d74/BDA%20Practical%204(Grade).md)
 
+## [THEORY](https://chatgpt.com/share/69f8abb4-fdc0-8322-9f05-828d18a6d78d)

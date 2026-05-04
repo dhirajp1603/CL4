@@ -24,6 +24,23 @@ Result:
 Each element:
 C[i][j] = Σ (A[i][k] × B[k][j])
 
+
+
+---
+
+
+
+
+---
+
+## ⚙️ Execution Steps
+
+### 1️⃣ Create Input File
+
+```id="rql2nm"
+nano input.txt
+```
+
 ---
 
 ## 📂 Input Data
@@ -56,7 +73,11 @@ B,1,1,8
 7  8
 ```
 
----
+### 2️⃣ Create Mapper & Reducer
+
+```id="0a2k5z"
+nano mapper.py
+```
 
 ## 📜 Mapper Code (mapper.py)
 
@@ -68,10 +89,6 @@ N = 2  # matrix size
 
 for line in sys.stdin:
     line = line.strip()
-
-    if not line:
-        continue
-
     parts = line.split(",")
 
     if len(parts) != 4:
@@ -80,7 +97,21 @@ for line in sys.stdin:
     matrix, i, j, val = parts
     i, j, val = int(i), int(j), float(val)
 
+    if matrix == "A":
+        for col in range(N):
+            print "%d,%d\tA,%d,%f" % (i, col, j, val)
+
+    elif matrix == "B":
+        for row in range(N):
+            print "%d,%d\tB,%d,%f" % (row, j, i, val)
 ```
+
+### 2️⃣ Create Reducer
+
+```id="0a2k4z"
+nano reducer.py
+```
+
 
 ---
 
@@ -133,23 +164,6 @@ for line in sys.stdin:
 
 if current_key:
     process(current_key, values)
-```
-
----
-
-## ⚙️ Execution Steps
-
-### 1️⃣ Create Input File
-
-```id="rql2nm"
-nano input.txt
-```
-
-### 2️⃣ Create Mapper & Reducer
-
-```id="0a2k5z"
-nano mapper.py
-nano reducer.py
 ```
 
 ### 3️⃣ Make Files Executable

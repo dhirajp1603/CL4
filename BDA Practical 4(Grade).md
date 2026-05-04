@@ -19,6 +19,16 @@ In this experiment:
 
 ---
 
+---
+
+## ⚙️ Execution Steps
+
+### 1️⃣ Create Input File
+
+```id="2k4mzp"
+nano students.txt
+```
+
 ## 📂 Input Data
 
 **students.txt**
@@ -30,8 +40,13 @@ In this experiment:
 102,Science,68
 103,Math,55
 ```
----
 
+
+### 2️⃣ Create Mapper & Reducer Files
+
+```id="c7v91s"
+nano mapper.py
+```
 ## 📜 Mapper Code (mapper.py)
 
 ```python id="x8q2mn"
@@ -53,8 +68,11 @@ for line in sys.stdin:
     except:
         continue
 ```
+### 2️⃣ Create Mapper & Reducer Files
 
----
+```
+nano reducer.py
+```
 
 ## 📜 Reducer Code (reducer.py)
 
@@ -97,23 +115,6 @@ if current_student:
     avg = sum(marks_list) / len(marks_list)
     grade = calculate_grade(avg)
     print "%s,%0.2f,%s" % (current_student, avg, grade)
-```
-
----
-
-## ⚙️ Execution Steps
-
-### 1️⃣ Create Input File
-
-```id="2k4mzp"
-nano students.txt
-```
-
-### 2️⃣ Create Mapper & Reducer Files
-
-```id="c7v91s"
-nano mapper.py
-nano reducer.py
 ```
 
 ### 3️⃣ Make Scripts Executable

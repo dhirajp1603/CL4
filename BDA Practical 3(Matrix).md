@@ -261,3 +261,34 @@ Hadoop groups all values with the same key before sending them to the reducer.
 ## 🚀 Conclusion
 
 This experiment demonstrates how MapReduce can be used to perform matrix multiplication in a distributed manner using Hadoop Streaming and Python.
+
+```
+#!/usr/bin/env python
+import sys
+
+N = 2  # number of columns in A / rows in B
+
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+
+    parts = line.split(",")
+    if len(parts) != 4:
+        continue
+
+    matrix, i, j, val = parts
+    i, j, val = int(i), int(j), float(val)
+
+    if matrix == "A":
+        for col in range(N):
+            key = "%d,%d" % (i, col)
+            value = "A,%d,%f" % (j, val)
+            print("%s\t%s" % (key, value))
+
+    else:  # matrix B
+        for row in range(N):
+            key = "%d,%d" % (row, j)
+            value = "B,%d,%f" % (i, val)
+            print("%s\t%s" % (key, value))
+'''
